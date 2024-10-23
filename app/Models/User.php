@@ -4,9 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -62,4 +64,43 @@ class User extends Authenticatable
         return $this->belongsTo(Country::class);
     }
 
+    /**
+     * The calendars that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function calendars(): BelongsToMany
+    {
+        return $this->belongsToMany(Calendar::class);
+    }
+
+    /**
+     * The departaments that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function departaments(): BelongsToMany
+    {
+        return $this->belongsToMany(Departament::class);
+    }
+
+    /**
+     * Get all of the holidays for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function holidays(): HasMany
+    {
+        return $this->hasMany(Holiday::class);
+    }
+
+    /**
+     * Get all of the timesheets for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function timesheets(): HasMany
+    {
+        return $this->hasMany(Timesheet::class);
+    }
 }
