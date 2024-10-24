@@ -9,4 +9,5 @@ class Calendar extends Model
 {
     //
     use HasFactory;
+    protected $guarded = [];
 }

@@ -12,6 +12,8 @@ class Timesheet extends Model
 {
     //
     use HasFactory;
+    protected $guarded = [];
+    
     /**
      * Get the user that owns the Holiday
      *

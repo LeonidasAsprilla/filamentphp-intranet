@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Departament extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 }
