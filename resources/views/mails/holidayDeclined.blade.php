@@ -1,0 +1,2 @@
+<h1>SOLICITUD DE VACACIONES RECHAZADA</h1>
+<p>La solicitud de vacaciones del empleado {{ $data['name'] }} con email {{ $data['email'] }} para el día {{ $data['day'] }} ha sido <strong style="color: red">RECHAZADA!</strong></p>
