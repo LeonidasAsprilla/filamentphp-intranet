@@ -48,6 +48,11 @@ class UserResource extends Resource
                         ->email()
                         ->required()
                         ->maxLength(255),
+                    Select::make('roles')
+                        ->relationship('roles', 'name')
+                        ->multiple()
+                        ->preload()
+                        ->searchable(),
                     // Forms\Components\DateTimePicker::make('email_verified_at'),
                     TextInput::make('password')
                         ->password()
@@ -108,11 +113,18 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
-                    TextColumn::make('address')
+                TextColumn::make('roles.name')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'panel_user' => 'warning',
+                        'super_admin' => 'success',
+                    })
+                    ->searchable(),
+                TextColumn::make('address')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                    TextColumn::make('postal_code')
+                TextColumn::make('postal_code')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),

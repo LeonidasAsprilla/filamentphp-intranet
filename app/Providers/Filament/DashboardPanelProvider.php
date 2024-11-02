@@ -26,6 +26,9 @@ class DashboardPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+            ])
             ->login()
             ->colors([
                 'primary' => Color::Amber,

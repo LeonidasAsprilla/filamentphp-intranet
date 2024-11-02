@@ -25,6 +25,9 @@ class PersonalPanelProvider extends PanelProvider
         return $panel
             ->id('personal')
             ->path('personal')
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+            ])
             ->login()
             ->default()
             ->colors([

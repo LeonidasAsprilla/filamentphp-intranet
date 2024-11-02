@@ -3,17 +3,23 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use BezhanSalleh\FilamentShield\Support\Utils;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles, HasPanelShield;
 
     /**
      * The attributes that are mass assignable.
@@ -103,4 +109,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Timesheet::class);
     }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if($panel->getId() === 'admin'){
+            return $this->hasRole(Utils::getSuperAdminName());
+        }elseif($panel->getId() === 'personal'){
+            return $this->hasRole(Utils::getSuperAdminName()) || $this->hasRole(config('filament-shield.panel_user.name', 'panel_user'));
+        }else {
+            return false;
+        }
+    }
+
+    // protected static function booted(): void
+    // {
+    //     if(config('filament-shield.panel_user.enabled', false)){
+    //         static::created(function (User $user) {
+    //             $user->assignRole(config('filament-shield.panel_user.name', 'panel_user'));
+    //         });
+    //         static::deleting(function (User $user) {
+    //             $user->removeRole(config('filament-shield.panel_user.name', 'panel_user'));
+    //         });
+
+    //     }
+    // }
 }
