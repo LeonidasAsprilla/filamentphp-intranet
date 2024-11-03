@@ -10,7 +10,9 @@ use PhpParser\Node\Expr\New_;
 use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use EightyNine\ExcelImport\ExcelImportAction;
 use App\Filament\Personal\Resources\TimeSheetResource;
+use App\Imports\MyTimesheetImport;
 
 class ListTimeSheets extends ListRecords
 {
@@ -120,6 +122,9 @@ class ListTimeSheets extends ListRecords
                         ->info()
                         ->send();
                 }),
+            ExcelImportAction::make()
+                ->color("primary")
+                ->use(MyTimesheetImport::class),
             Actions\CreateAction::make(),
         ];
     }

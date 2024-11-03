@@ -9,9 +9,12 @@
         "altwaireb/laravel-world": "^1.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
         "bezhansalleh/filament-shield": "^3.2",
+        "eightynine/filament-excel-import": "^3.1",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "pxlrbt/filament-excel": "^2.3",
+        "pxlrbt/filament-spotlight": "^1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -11,7 +11,9 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Personal\Resources\TimeSheetResource\Pages;
 use App\Filament\Personal\Resources\TimeSheetResource\RelationManagers;
 
@@ -23,7 +25,7 @@ class TimeSheetResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->orderBy('id','desc');
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->orderBy('day_in','desc');
     }
 
     public static function form(Form $form): Form
@@ -59,10 +61,12 @@ class TimeSheetResource extends Resource
                     ->numeric()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->searchable()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('user.id')
+                //     ->label('User Id')
+                //     ->numeric(),
+                // Tables\Columns\TextColumn::make('user.name')
+                //     ->searchable()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('day_in')
@@ -97,6 +101,13 @@ class TimeSheetResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make('table')->fromTable()
+                        ->withFilename('timesheet_'.date('Y-m-d') . '_export'),
+                        ExcelExport::make('form')->fromForm()
+                        ->askForFilename()
+                        ->askForWriterType(),
+                    ]),
                 ]),
             ]);
     }
